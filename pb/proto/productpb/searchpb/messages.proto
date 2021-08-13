@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package simcart.api.product.search;
+
+option go_package = "simcart/api/pb/productpb/searchpb;searchpb";
+
+import "commonpb/enums.proto";
+import "productpb/messages.proto";
+import "google/protobuf/field_mask.proto";
+
+message Request {
+    simcart.api.common.Category category = 1;
+    google.protobuf.FieldMask update_mask = 2;
+    string keyword = 3;
+
+}
+
+message Response {
+   repeated simcart.api.product.Product result = 1;
+}

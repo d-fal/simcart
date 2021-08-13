@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package simcart.api.product.search;
+
+option go_package = "simcart/api/pb/productpb/searchpb;searchpb";
+import "google/api/annotations.proto";
+import "productpb/searchpb/messages.proto";
+
+service Search {
+    rpc SearchProduct (Request) returns (Response) {
+      option (google.api.http) = {
+			post: "/v1/product/search"
+			body: "*"
+		};
+
+    }
+}

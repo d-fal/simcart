@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package simcart.api.product;
+
+option go_package = "simcart/api/pb/productpb;productpb";
+import "google/api/annotations.proto";
+import "commonpb/enums.proto";
+
+
+message Product {
+    simcart.api.common.Category category = 1;
+    string product = 2;
+    repeated string description = 3;
+    string sku = 4;
+    double price = 5;
+    simcart.api.common.Currency currency = 6;
+}
+
+

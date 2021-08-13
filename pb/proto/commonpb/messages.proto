@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package simcart.api.common;
+
+option go_package = "simcart/api/pb/commonpb;commonpb";

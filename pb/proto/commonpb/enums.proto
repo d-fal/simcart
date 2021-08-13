@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package simcart.api.common;
+
+option go_package = "simcart/api/pb/commonpb;commonpb";
+
+
+enum Category {
+    Appliance       = 0;
+    Stationary      = 1;
+    FMCG            = 2;
+    Apparel         = 3;
+}
+
+enum Currency {
+    USD = 0;
+    EUR = 1;
+    GBP = 2;
+    reserved 3 to 100;
+}

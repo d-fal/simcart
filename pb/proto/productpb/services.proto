@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package simcart.api.product;
+
+option go_package = "simcart/api/pb/productpb;productpb";
+
+import "google/api/annotations.proto";
+import "productpb/messages.proto";
+import "google/protobuf/empty.proto";
+
+
+service ProductService {
+
+    rpc Add (Product) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+			post: "/v1/product/add"
+			body: "*"
+		};
+    }
+
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package simcart.api.cart;
+
+option go_package = "simcart/api/pb/cartpb;cartpb";
+
+// CartRequest represents the request struct that comes from the user 
+// side. It may bear a non-empty cartId that would be used to manipulate the cart content.
+message CartRequest {
+    string productUUID = 1;
+   string sku = 2;
+   int32 qty = 3;
+   // bid or offerred price
+   int64 bid = 4; 
+   string cartId = 5;
+}
+
+message CartResponse {
+    string cartId = 1;
+}

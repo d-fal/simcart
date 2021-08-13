@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package simcart.api.cart;
+
+option go_package = "simcart/api/pb/cartpb;cartpb";
+import "cartpb/messages.proto";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+// import "protoc-gen-openapiv2/options/annotations.proto";
+
+service Cart {
+    rpc Add (CartRequest) returns (CartResponse) {
+		option (google.api.http) = {
+			post: "/v1/cart/add"
+			body: "*"
+		};
+	}
+
+    rpc Get (CartRequest) returns (stream CartResponse) {
+		option (google.api.http) = {
+			get: "/v1/cart/list"
+		};
+    }
+
+    rpc Remove (CartRequest) returns (CartResponse) {
+	    option (google.api.http) = {
+			post: "/v1/cart/rm"
+			body: "*"
+		};
+    }
+
+    rpc Flush (CartRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+			put: "/v1/cart/flush"
+			body: "*"
+		};
+    }
+}
