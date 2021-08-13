@@ -18,7 +18,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"simcart/interface/apm"
-	grpc_cart_handler "simcart/interface/product"
+	grpc_cart_handler "simcart/interface/cart"
 	grpc_product_handler "simcart/interface/product"
 	grpc_product_search_handler "simcart/interface/product/search"
 
@@ -83,7 +83,7 @@ func (s *skeleton) server(ctx context.Context) error {
 	searchpb.RegisterSearchServer(grpcServer,
 		grpc_product_search_handler.NewSearchServerHandler(ctx))
 
-	cartpb.RegisterCartServer(grpcServer, grpc_cart_handler.NewProductServerHandler(ctx))
+	cartpb.RegisterCartServer(grpcServer, grpc_cart_handler.NewCartServerHandler(ctx))
 
 	healthgrpc.RegisterHealthServer(grpcServer, health.NewServer())
 

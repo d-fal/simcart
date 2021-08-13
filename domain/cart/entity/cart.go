@@ -1,57 +1,53 @@
-package cart
+package entity
 
 import (
-	product_entity "simcart/domain/product/entity"
+	"simcart/api/pb/cartpb"
 	"simcart/pkg/model"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/google/uuid"
 )
 
 type Cart struct {
 	model.Model
 
-	ProductId uint64
-	Product   *product_entity.Product `pg:",rel:has-one"`
+	tableName struct{} `pg:"carts"`
 
-	Discount float32
-	Qty      uint64
+	UUID  uuid.UUID `pg:",notnull,type:uuid default uuid_generate_v4()"`
+	Owner uuid.UUID `pg:",unique:id_status_owner,notnull,type:uuid"` // simply put, whoever makes the request
 
-	Owner string // simply put, whoever makes the request
+	Status cartpb.CartStatus `pg:",unique:id_status_owner,use_zero"`
+
+	CartItems []*CartItem `pg:"rel:has-many"`
 
 	model.Deleteables
 }
-
-type CartOperations interface {
-	Add() model.InsertFunc
-	SetProduct(product *product_entity.Product) *Cart
-	SetDiscount(discount float32) *Cart
-	SetQty(qty uint64) *Cart
+type CartAdapter interface {
+	Select(cid uuid.UUID, tatus cartpb.CartStatus) model.SelectOrInsertFunc
+	NewItem() CartOperations
+	SetOwner(owner uuid.UUID)
+	Get() *Cart
 }
 
-func NewCart() CartOperations {
+func NewCart() CartAdapter {
 	return new(Cart)
 }
 
-func (c *Cart) Add() model.InsertFunc {
-	return func(tx *pg.Tx) error {
-		if _, err := tx.Model(c).Insert(); err != nil {
-			return err
-		}
-		return nil
+func (c *Cart) Select(cid uuid.UUID, status cartpb.CartStatus) model.SelectOrInsertFunc {
+	return func(db *pg.DB) error {
+		_, err := db.Model(c).Where("owner = ? ", c.Owner).Where("status = ? ", status).OnConflict("do nothing").Returning("uuid").SelectOrInsert()
+		return err
 	}
 }
 
-func (c *Cart) SetProduct(p *product_entity.Product) *Cart {
-	c.Product, c.ProductId = p, p.Id
+func (c *Cart) NewItem() CartOperations {
+	return newCartItem()
+}
+
+func (c *Cart) Get() *Cart {
 	return c
 }
 
-func (c *Cart) SetDiscount(discount float32) *Cart {
-	c.Discount = discount
-	return c
-}
-
-func (c *Cart) SetQty(qty uint64) *Cart {
-	c.Qty = qty
-	return c
+func (c *Cart) SetOwner(owner uuid.UUID) {
+	c.Owner = owner
 }

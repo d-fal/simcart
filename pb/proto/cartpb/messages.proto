@@ -3,6 +3,8 @@ syntax = "proto3";
 package simcart.api.cart;
 
 option go_package = "simcart/api/pb/cartpb;cartpb";
+import "cartpb/enums.proto";
+import "commonpb/enums.proto";
 
 // CartRequest represents the request struct that comes from the user 
 // side. It may bear a non-empty cartId that would be used to manipulate the cart content.
@@ -12,9 +14,12 @@ message CartRequest {
    int32 qty = 3;
    // bid or offerred price
    int64 bid = 4; 
-   string cartId = 5;
+   string cartUUID = 5;
+   simcart.api.common.Currency cuurency = 6;
+   string owner = 7;
 }
 
 message CartResponse {
-    string cartId = 1;
+    string cartUUID = 1;
+    CartStatus status = 2;
 }

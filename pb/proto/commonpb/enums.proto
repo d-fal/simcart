@@ -18,3 +18,4 @@ enum Currency {
     GBP = 2;
     reserved 3 to 100;
 }
+

@@ -113,6 +113,7 @@ func (c *command) createModels(cmd *cobra.Command, args []string) {
 	models := []interface{}{
 		(*entity.Product)(nil),
 		(*cart_entity.Cart)(nil),
+		(*cart_entity.CartItem)(nil),
 	}
 
 	for _, m := range models {

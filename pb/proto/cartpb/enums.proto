@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package simcart.api.cart;
+
+option go_package = "simcart/api/pb/cartpb;cartpb";
+
+
+enum CartStatus {
+   New = 0;
+   Closed = 1;
+   CheckedOut = 2;
+   Expired = 3;
+   WaitingForPayment = 4;
+   Fullfilled = 5;
+   Delivered = 6;
+   Postponed = 7;
+}
