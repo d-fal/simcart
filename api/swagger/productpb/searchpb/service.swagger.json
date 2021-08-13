@@ -1,0 +1,155 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "productpb/searchpb/service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Search"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/product/search": {
+      "post": {
+        "operationId": "Search_SearchProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/searchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/searchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Search"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "commonCategory": {
+      "type": "string",
+      "enum": [
+        "Appliance",
+        "Stationary",
+        "FMCG",
+        "Apparel"
+      ],
+      "default": "Appliance"
+    },
+    "commonCurrency": {
+      "type": "string",
+      "enum": [
+        "USD",
+        "EUR",
+        "GBP"
+      ],
+      "default": "USD"
+    },
+    "productProduct": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/commonCategory"
+        },
+        "product": {
+          "type": "string"
+        },
+        "description": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sku": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "$ref": "#/definitions/commonCurrency"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "searchRequest": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/commonCategory"
+        },
+        "updateMask": {
+          "type": "string"
+        },
+        "keyword": {
+          "type": "string"
+        }
+      }
+    },
+    "searchResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/productProduct"
+          }
+        }
+      }
+    }
+  }
+}

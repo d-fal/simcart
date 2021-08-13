@@ -45,7 +45,10 @@ func (c *cart) AddItem(ctx context.Context, in *cartpb.CartRequest) (*cartpb.Car
 
 	defer c.tx.Close()
 
-	if err := c.instance.NewItem().Add()(c.tx.Get()); err != nil {
+	newItem := c.instance.NewItem()
+	newItem.SetCart(c.instance.Get())
+
+	if err := newItem.Add()(c.tx.Get()); err != nil {
 		return nil, err
 	}
 

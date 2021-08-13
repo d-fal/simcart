@@ -17,7 +17,7 @@ type Product struct {
 
 	Category commonpb.Category `pg:",use_zero"`
 
-	Price int64
+	Price float64
 
 	Currency commonpb.Currency
 
@@ -28,10 +28,25 @@ type Product struct {
 	model.Deleteables
 }
 
+type ProductAdapter interface {
+	Marshal() ([]byte, error)
+	Unmarshal(data []byte) error
+	SetPrice(price float64) *Product
+}
+
+func NewProduct() ProductAdapter {
+	return new(Product)
+}
+
 func (p *Product) Marshal() ([]byte, error) {
 	return json.Marshal(p)
 }
 
 func (p *Product) Unmarshal(data []byte) error {
 	return json.Unmarshal(data, p)
+}
+
+func (p *Product) SetPrice(price float64) *Product {
+	p.Price = price
+	return p
 }

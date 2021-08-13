@@ -26,6 +26,7 @@ type CartOperations interface {
 	SetProduct(product *product_entity.Product) *CartItem
 	SetDiscount(discount float32) *CartItem
 	SetQty(qty uint64) *CartItem
+	SetCart(cart *Cart) *CartItem
 }
 
 func newCartItem() CartOperations {
@@ -53,5 +54,10 @@ func (c *CartItem) SetDiscount(discount float32) *CartItem {
 
 func (c *CartItem) SetQty(qty uint64) *CartItem {
 	c.Qty = qty
+	return c
+}
+
+func (c *CartItem) SetCart(cart *Cart) *CartItem {
+	c.Cart, c.CartId = cart, cart.Id
 	return c
 }

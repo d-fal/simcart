@@ -31,7 +31,7 @@ func Search(in *searchpb.Request, f func(*productpb.Product)) error {
 			Product:  product.Title,
 			Sku:      product.Sku,
 			Category: product.Category,
-			Price:    float64(product.Price),
+			Price:    product.Price,
 			Currency: product.Currency,
 		})
 

@@ -1,0 +1,296 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "cartpb/services.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Cart"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/cart/add": {
+      "post": {
+        "operationId": "Cart_Add",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/cartCartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cartCartRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/flush": {
+      "put": {
+        "operationId": "Cart_Flush",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cartCartRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/list": {
+      "get": {
+        "operationId": "Cart_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/cartCartResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of cartCartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "productUUID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sku",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "qty",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "bid",
+            "description": "bid or offerred price.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "cartUUID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cuurency",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP"
+            ],
+            "default": "USD"
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/rm": {
+      "post": {
+        "operationId": "Cart_Remove",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/cartCartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cartCartRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "cartCartRequest": {
+      "type": "object",
+      "properties": {
+        "productUUID": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "qty": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bid": {
+          "type": "string",
+          "format": "int64",
+          "title": "bid or offerred price"
+        },
+        "cartUUID": {
+          "type": "string"
+        },
+        "cuurency": {
+          "$ref": "#/definitions/commonCurrency"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "description": "CartRequest represents the request struct that comes from the user \nside. It may bear a non-empty cartId that would be used to manipulate the cart content."
+    },
+    "cartCartResponse": {
+      "type": "object",
+      "properties": {
+        "cartUUID": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/cartCartStatus"
+        }
+      }
+    },
+    "cartCartStatus": {
+      "type": "string",
+      "enum": [
+        "New",
+        "Closed",
+        "CheckedOut",
+        "Expired",
+        "WaitingForPayment",
+        "Fullfilled",
+        "Delivered",
+        "Postponed"
+      ],
+      "default": "New"
+    },
+    "commonCurrency": {
+      "type": "string",
+      "enum": [
+        "USD",
+        "EUR",
+        "GBP"
+      ],
+      "default": "USD"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
