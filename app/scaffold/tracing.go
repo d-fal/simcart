@@ -3,6 +3,7 @@ package scaffold
 import (
 	"io"
 	"log"
+	"simcart/config"
 
 	"github.com/opentracing/opentracing-go"
 	"github.com/uber/jaeger-client-go"
@@ -17,7 +18,7 @@ func (s *skeleton) tracing() (opentracing.Tracer, io.Closer, error) {
 	metricsFactory := prometheus.New()
 
 	cfg := jaegercfg.Configuration{
-		ServiceName: "crypto-gw",
+		ServiceName: config.GetAppConfig().Application().Id,
 
 		Sampler: &jaegercfg.SamplerConfig{
 			Type:  jaeger.SamplerTypeConst,
