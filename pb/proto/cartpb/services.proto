@@ -17,22 +17,24 @@ service Cart {
 		};
 	}
 
-    rpc Get (CartRequest) returns (stream CartResponse) {
+    rpc Get (CartFilter) returns (CartRequests) {
 		option (google.api.http) = {
-			get: "/v1/cart/list"
+			post: "/v1/cart/list"
+            body: "*"
 		};
     }
 
-    rpc Remove (CartRequest) returns (CartResponse) {
+    rpc Remove (CartRequest) returns (google.protobuf.Empty) {
 	    option (google.api.http) = {
 			post: "/v1/cart/rm"
 			body: "*"
 		};
     }
 
-    rpc Flush (CartRequest) returns (google.protobuf.Empty) {
+
+    rpc Checkout (CartRequest) returns (CheckoutResponse) {
         option (google.api.http) = {
-			put: "/v1/cart/flush"
+			put: "/v1/cart/checkout"
 			body: "*"
 		};
     }

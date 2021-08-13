@@ -14,7 +14,7 @@ import (
 
 func (s *skeleton) commissioning(ctx context.Context) (err error) {
 
-	s.context, s.cancel = context.WithCancel(context.Background())
+	s.context, s.cancel = context.WithCancel(ctx)
 
 	s.tracer, s.closer, err = s.tracing()
 
@@ -37,7 +37,7 @@ func (s *skeleton) commissioning(ctx context.Context) (err error) {
 		return err
 	}
 
-	if err := redis.NewClient(0).Connect(config.GetAppConfig()); err != nil {
+	if err := redis.NewClient( /* 0 th db is selecte*/ 0).Connect(config.GetAppConfig()); err != nil {
 
 		fmt.Printf("%v starting redis failed: why? %v\n",
 			aurora.Red(html.UnescapeString("&#x274C;")), aurora.Red(err))

@@ -1,25 +1,30 @@
 package entity
 
 import (
+	"fmt"
+	"simcart/api/pb/cartpb"
 	product_entity "simcart/domain/product/entity"
 	"simcart/pkg/model"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/google/uuid"
+	"github.com/logrusorgru/aurora"
 )
 
 type CartItem struct {
 	model.Model
-
-	ProductId uint64
+	UUID      uuid.UUID               `pg:",notnull,type:uuid default uuid_generate_v4()"`
+	ProductId uint64                  `pg:",unique:idx_product_id_cart_id"`
 	Product   *product_entity.Product `pg:"rel:has-one"`
 
-	Discount float32
-	Qty      uint64
+	Discount float32 `pg:",use_zero"`
+	Qty      uint64  `pg:",notnull"`
 
-	CartId uint64 `pg:",notnull"`
+	CartId uint64 `pg:",notnull,unique:idx_product_id_cart_id"`
 	Cart   *Cart  `pg:"rel:has-one"`
 	model.Deleteables
 }
+type CartItems []*CartItem
 
 type CartOperations interface {
 	Add() model.InsertFunc
@@ -27,15 +32,18 @@ type CartOperations interface {
 	SetDiscount(discount float32) *CartItem
 	SetQty(qty uint64) *CartItem
 	SetCart(cart *Cart) *CartItem
+	DropItem(itemId uuid.UUID) func(db *pg.DB) error
 }
 
-func newCartItem() CartOperations {
+func NewCartItem() CartOperations {
 	return new(CartItem)
 }
 
 func (c *CartItem) Add() model.InsertFunc {
 	return func(tx *pg.Tx) error {
-		if _, err := tx.Model(c).Insert(); err != nil {
+		if _, err := tx.Model(c).
+			OnConflict("(product_id,cart_id) do update").
+			Insert(); err != nil {
 			return err
 		}
 		return nil
@@ -60,4 +68,26 @@ func (c *CartItem) SetQty(qty uint64) *CartItem {
 func (c *CartItem) SetCart(cart *Cart) *CartItem {
 	c.Cart, c.CartId = cart, cart.Id
 	return c
+}
+
+func (c *CartItem) DropItem(itemId uuid.UUID) func(db *pg.DB) error {
+	return func(db *pg.DB) error {
+		_, err := db.Model(c).Where("uuid = ?", itemId).Delete()
+		fmt.Println("check", aurora.Red(err))
+		return err
+	}
+}
+
+// ToPb works as an adapter to prepare data to be used in grpc friendly way
+func (cs CartItems) ToPb() []*cartpb.CartDetail {
+	reuslt := []*cartpb.CartDetail{}
+	for _, item := range cs {
+		reuslt = append(reuslt, &cartpb.CartDetail{
+			Qty:      item.Qty,
+			Discount: item.Discount,
+			ItemUUID: item.UUID.String(),
+		})
+	}
+
+	return reuslt
 }

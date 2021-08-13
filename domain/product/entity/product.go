@@ -5,6 +5,7 @@ import (
 	"simcart/api/pb/commonpb"
 	"simcart/pkg/model"
 
+	"github.com/go-pg/pg/v10"
 	"github.com/google/uuid"
 )
 
@@ -32,6 +33,9 @@ type ProductAdapter interface {
 	Marshal() ([]byte, error)
 	Unmarshal(data []byte) error
 	SetPrice(price float64) *Product
+	SetSku(sku string) *Product
+	Select() model.SelectOrInsertFunc
+	Get() *Product
 }
 
 func NewProduct() ProductAdapter {
@@ -48,5 +52,20 @@ func (p *Product) Unmarshal(data []byte) error {
 
 func (p *Product) SetPrice(price float64) *Product {
 	p.Price = price
+	return p
+}
+
+func (p *Product) SetSku(sku string) *Product {
+	p.Sku = sku
+	return p
+}
+
+func (p *Product) Select() model.SelectOrInsertFunc {
+	return func(db *pg.DB) error {
+		return db.Model(p).Where("sku = ?", p.Sku).Select()
+	}
+}
+
+func (p *Product) Get() *Product {
 	return p
 }

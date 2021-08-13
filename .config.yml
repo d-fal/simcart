@@ -24,7 +24,7 @@ client:
     host: postgres
     port: 5432
     user: postgres
-    database: test_db
+    database: simcart
     password: changeme
   redisearch:
     host: redisearch

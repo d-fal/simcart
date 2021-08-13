@@ -17,3 +17,4 @@ type Deleteables struct {
 
 type InsertFunc func(tx *pg.Tx) error
 type SelectOrInsertFunc func(db *pg.DB) error
+type SelectFunc func(db *pg.DB) error

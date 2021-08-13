@@ -24,10 +24,13 @@ func (c *appConfig) SetPath(path string) {
 	}
 }
 
+// load config file
 func (c *appConfig) load() error {
 
 	viper.AddConfigPath(c.base)
 	viper.SetConfigName(".config")
+
+	viper.BindEnv("client.postgres.database", "POSTGRES_DATABASE")
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("config file not found: %v\n", aurora.Red(err)))

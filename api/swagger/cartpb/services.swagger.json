@@ -48,9 +48,73 @@
         ]
       }
     },
-    "/v1/cart/flush": {
+    "/v1/cart/checkout": {
       "put": {
-        "operationId": "Cart_Flush",
+        "operationId": "Cart_Checkout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/cartCheckoutResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cartCartRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/list": {
+      "post": {
+        "operationId": "Cart_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/cartCartRequests"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cartCartFilter"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/rm": {
+      "post": {
+        "operationId": "Cart_Remove",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -79,137 +143,52 @@
           "Cart"
         ]
       }
-    },
-    "/v1/cart/list": {
-      "get": {
-        "operationId": "Cart_Get",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/cartCartResponse"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of cartCartResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "productUUID",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sku",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "qty",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "bid",
-            "description": "bid or offerred price.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "cartUUID",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "cuurency",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "USD",
-              "EUR",
-              "GBP"
-            ],
-            "default": "USD"
-          },
-          {
-            "name": "owner",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Cart"
-        ]
-      }
-    },
-    "/v1/cart/rm": {
-      "post": {
-        "operationId": "Cart_Remove",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/cartCartResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/cartCartRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ]
-      }
     }
   },
   "definitions": {
+    "cartCartDetail": {
+      "type": "object",
+      "properties": {
+        "itemUUID": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "qty": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "discount": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "cartCartFilter": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "type": "string"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cartCartStatus"
+          }
+        }
+      }
+    },
     "cartCartRequest": {
       "type": "object",
       "properties": {
-        "productUUID": {
-          "type": "string"
-        },
         "sku": {
           "type": "string"
         },
         "qty": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "uint64"
         },
         "bid": {
           "type": "string",
@@ -224,9 +203,23 @@
         },
         "owner": {
           "type": "string"
+        },
+        "itemId": {
+          "type": "string"
         }
       },
       "description": "CartRequest represents the request struct that comes from the user \nside. It may bear a non-empty cartId that would be used to manipulate the cart content."
+    },
+    "cartCartRequests": {
+      "type": "object",
+      "properties": {
+        "responses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cartCartResponse"
+          }
+        }
+      }
     },
     "cartCartResponse": {
       "type": "object",
@@ -236,6 +229,12 @@
         },
         "status": {
           "$ref": "#/definitions/cartCartStatus"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cartCartDetail"
+          }
         }
       }
     },
@@ -252,6 +251,20 @@
         "Postponed"
       ],
       "default": "New"
+    },
+    "cartCheckoutResponse": {
+      "type": "object",
+      "properties": {
+        "cartUUID": {
+          "type": "string"
+        },
+        "refrence": {
+          "type": "string"
+        },
+        "paymentUrl": {
+          "type": "string"
+        }
+      }
     },
     "commonCurrency": {
       "type": "string",
