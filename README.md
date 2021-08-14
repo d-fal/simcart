@@ -26,6 +26,8 @@ This code is structured to be in compliance with **domain driven design (DDD)**.
 
 ```
 Redisearch provides several stunning methods such as phrase search, autocompletion and suggestion based on Levenshtein distance algorithm. In this project, we would store the products and its detail at project startup and a **payload** would be added there.
+
+
 ### API
 
 * Search Products
@@ -82,6 +84,14 @@ To run this project, simply run the docker-compose.yml.
   docker-compose up
 ```
 This should create all the necessary apis and swagger files in [api](https://github.com/d-fal/simcart/tree/master/api) folder.
+In order to use test_db, one should change the **run.sh** file a bit and run it in this way:
+```
+  POSTGRESS_DATABASE=test_db simcart mode --debug=true
+```
+
+### Grpc interface
+Once used in debug mode, the reflection is being enabled on grpc server. Thus, you can call it by tools like **evans** and see inside it.
+
 
 
 ### Demo
@@ -95,3 +105,10 @@ You can also test the apis at [simcart.100g.ir](simcart.100g.ir) at port 80 , 50
 * list : [POST] http://simcart.100g.ir/v1/cart/list
 * rm : [POST] http://simcart.100g.ir/v1/cart/rm
 * checkout : [PUT] http://simcart.100g.ir/v1/cart/checkout
+
+
+**grpc** interface by [**evans**](https://github.com/ktr0731/evans)
+
+```
+evans --host simcart.100g.ir -p 50052 -r 
+```
