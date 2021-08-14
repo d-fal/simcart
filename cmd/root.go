@@ -27,9 +27,8 @@ var (
 	logPath string
 	Runner  CommandLine = &command{}
 	rootCmd             = &cobra.Command{
-		Use:              "crypto-gw",
-		Short:            "Rabex crypto gateway",
-		Long:             `Crypto Gateway provides direct access to the crypto networks.`,
+		Use:              "simcart",
+		Short:            "simcart app",
 		Run:              Runner.run,
 		TraverseChildren: true,
 	}
