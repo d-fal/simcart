@@ -17,7 +17,9 @@ A very simple cart handling project with **grpc-gateway** , **redisearch** and *
 There are two types of metrics for this app. Grpc metrics and rest metrics.
 * grpc health is implemented in compliance with [GRPC HEALTH CHECK PROTOCOL](https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
 
+**apm/v1/health**
 
+**apm/v1/metrics**
 ### Demo
 
 You can see a demo app [here](http://simcart.100g.ir/).
