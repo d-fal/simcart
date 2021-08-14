@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"html"
-	"simcart/clients/postgres"
-	"simcart/clients/redis"
-	"simcart/clients/search"
 	"simcart/config"
+	"simcart/infrastructure/postgres"
+	"simcart/infrastructure/redis"
+	"simcart/infrastructure/search"
 
 	"github.com/logrusorgru/aurora"
 )

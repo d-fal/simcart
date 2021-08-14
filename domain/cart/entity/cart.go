@@ -14,9 +14,9 @@ type Cart struct {
 	tableName struct{} `pg:"carts"`
 
 	UUID  uuid.UUID `pg:",notnull,type:uuid default uuid_generate_v4()"`
-	Owner uuid.UUID `pg:",unique:id_status_owner,notnull,type:uuid"` // simply put, whoever makes the request
+	Owner uuid.UUID `pg:",notnull,type:uuid"` // simply put, whoever makes the request
 
-	Status cartpb.CartStatus `pg:",unique:id_status_owner,use_zero"`
+	Status cartpb.CartStatus `pg:",use_zero"`
 
 	CartItems CartItems `pg:"rel:has-many"`
 
@@ -60,7 +60,8 @@ func (c *Cart) SetOwner(owner uuid.UUID) {
 
 func (c *Cart) Update(cartUUID uuid.UUID, status cartpb.CartStatus) func(db *pg.DB) error {
 	return func(db *pg.DB) error {
-		_, err := db.Model(c).Where("uuid = ? ", cartUUID).Set("status = ? ", status).Update()
+
+		_, err := db.Model(c).Where("uuid = ? ", cartUUID).Set("status = ? ", status).OnConflict("(owner,status) do update").Update()
 		return err
 	}
 }

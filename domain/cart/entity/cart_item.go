@@ -1,14 +1,12 @@
 package entity
 
 import (
-	"fmt"
 	"simcart/api/pb/cartpb"
 	product_entity "simcart/domain/product/entity"
 	"simcart/pkg/model"
 
 	"github.com/go-pg/pg/v10"
 	"github.com/google/uuid"
-	"github.com/logrusorgru/aurora"
 )
 
 type CartItem struct {
@@ -73,7 +71,6 @@ func (c *CartItem) SetCart(cart *Cart) *CartItem {
 func (c *CartItem) DropItem(itemId uuid.UUID) func(db *pg.DB) error {
 	return func(db *pg.DB) error {
 		_, err := db.Model(c).Where("uuid = ?", itemId).Delete()
-		fmt.Println("check", aurora.Red(err))
 		return err
 	}
 }

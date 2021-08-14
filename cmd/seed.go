@@ -6,10 +6,10 @@ import (
 	"log"
 	"reflect"
 	"simcart/api/pb/commonpb"
-	"simcart/clients/postgres"
-	"simcart/clients/search"
 	"simcart/config"
 	product_entity "simcart/domain/product/entity"
+	"simcart/infrastructure/postgres"
+	"simcart/infrastructure/search"
 	"simcart/pkg/model"
 
 	"github.com/RediSearch/redisearch-go/redisearch"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	search "simcart/clients/search"
+	search "simcart/infrastructure/search"
 
 	"github.com/stretchr/testify/assert"
 )

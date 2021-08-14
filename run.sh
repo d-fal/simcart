@@ -2,4 +2,4 @@
 
 ./simcart migrate create model --extensions=uuid-ossp,hstore
 ./simcart seed
-./simcart
+./simcart mode --debug=true

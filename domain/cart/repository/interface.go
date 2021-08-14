@@ -5,8 +5,8 @@ import (
 	"simcart/api/pb/cartpb"
 	"simcart/domain/cart/entity"
 
-	"simcart/clients/postgres"
 	product_entity "simcart/domain/product/entity"
+	"simcart/infrastructure/postgres"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"

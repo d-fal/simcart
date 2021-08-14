@@ -5,9 +5,9 @@ import (
 	"html"
 
 	"reflect"
-	"simcart/clients/postgres"
 	cart_entity "simcart/domain/cart/entity"
 	"simcart/domain/product/entity"
+	"simcart/infrastructure/postgres"
 
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/logrusorgru/aurora"

@@ -3,8 +3,8 @@ package repository
 import (
 	"simcart/api/pb/productpb"
 	"simcart/api/pb/productpb/searchpb"
-	"simcart/clients/search"
 	product_entity "simcart/domain/product/entity"
+	"simcart/infrastructure/search"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
