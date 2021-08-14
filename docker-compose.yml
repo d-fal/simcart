@@ -4,21 +4,21 @@ services:
   # -----------------------------
   # simcart
   # -----------------------------
-  # simcart:
-  #   # build or use image
-  #   build: .
-  #   tty: true # Enables debugging capabilities when attached to this container.
-  #   volumes:
-  #     - .:/go/src/github.com/d-fal/simcart
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #   ports:
-  #     - "50052:50051"
-  #   networks:
-  #     - backend
-  #     - dbnet
-  #     - frontend
+  simcart:
+    # build or use image
+    build: .
+    tty: true # Enables debugging capabilities when attached to this container.
+    volumes:
+      - .:/go/src/github.com/d-fal/simcart
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "50052:50051"
+    networks:
+      - backend
+      - dbnet
+      - frontend
   # -----------------------------
   # user-redis
   # -----------------------------
