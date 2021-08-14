@@ -60,7 +60,6 @@ services:
     tty: true
     ports:
       - "8100:80"
-      - "4430:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
