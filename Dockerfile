@@ -1,18 +1,28 @@
-FROM golang:1.16
+FROM golang:1.16 as builder
 
 # update
 RUN apt-get update
 
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/simcart
+WORKDIR /go/src/github.com/simcart
 
 COPY go.mod .
 COPY go.sum .
-RUN go mod download
+# RUN go mod download
 COPY . .
 
-RUN go build -o /simcart 
+RUN GOOS=linux go build -a -o simcart .
 
+# FROM alpine:latest
 
+# RUN apk add ca-certificates
 
-CMD ["run.sh"]
+# RUN mkdir -p /bin/simcart
+# WORKDIR /bin/simcart
+
+# COPY --from=builder /go/src/github.com/simcart/.config.yml ./
+# COPY --from=builder /go/src/github.com/simcart/run.sh ./
+# COPY --from=builder /go/src/github.com/simcart/simcart ./
+
+# RUN chmod +x ./simcart
+CMD ["sh","./run.sh"]

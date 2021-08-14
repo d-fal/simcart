@@ -8,8 +8,6 @@ services:
     # build or use image
     build: .
     tty: true # Enables debugging capabilities when attached to this container.
-    volumes:
-      - .:/go/src/github.com/d-fal/simcart
     depends_on:
       - postgres
       - redis
