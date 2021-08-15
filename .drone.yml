@@ -8,7 +8,7 @@ steps:
     commands:
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DATABASE=test_db go run . migrate create model --extensions=uuid-ossp,hstore
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DATABASE=test_db go run . seed
-      - go test ./...
+      - go test -v -coverprofile=coverage.txt -covermode=atomic ./...
 
   - name: coverage
     image: plugins/codecov
