@@ -139,6 +139,20 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 				"color":  "black",
 			},
 		},
+		{
+			Model:    model.Model{Id: 7},
+			Title:    "Apple iPhone 13",
+			Sku:      "100200800",
+			Price:    900,
+			Currency: commonpb.Currency_EUR,
+			Category: commonpb.Category_Appliance,
+			Descriptions: map[string]string{
+				"weight": "700gr",
+				"origin": "USA",
+				"size":   "2.5 inches",
+				"color":  "golden",
+			},
+		},
 	}
 
 	insert(&products)
