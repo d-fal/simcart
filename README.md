@@ -1,3 +1,4 @@
+[![Build Status](https://cloud.drone.io/api/badges/d-fal/simcart/status.svg)](https://cloud.drone.io/d-fal/simcart)
 # Simple Cart Project 
 
 A very simple cart handling project with **grpc-gateway** , **redisearch** and **postgresql**
