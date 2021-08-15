@@ -31,6 +31,7 @@ func (c *appConfig) load() error {
 	viper.SetConfigName(".config")
 
 	viper.BindEnv("client.postgres.database", "POSTGRES_DATABASE")
+	viper.BindEnv("client.postgres.password", "POSTGRES_PASSWORD")
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("config file not found: %v\n", aurora.Red(err)))

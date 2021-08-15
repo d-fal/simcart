@@ -31,7 +31,8 @@ func (s *skeleton) commissioning(ctx context.Context) (err error) {
 
 	if err = postgres.Storage.Connect(logLevel,
 		config.GetAppConfig().ClientPostgres()); err != nil {
-		return fmt.Errorf("%v \t %v\n", aurora.White(html.UnescapeString("&#x274C;")), err)
+		return fmt.Errorf("%v cannot initializing db %v at: %s\n",
+			aurora.White(html.UnescapeString("&#x274C;")), err, config.GetAppConfig().ClientPostgres().Addr())
 	}
 
 	client := search.NewClient(config.GetAppConfig().ClientRedisearch().Addr(), "indexer")

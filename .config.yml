@@ -9,13 +9,6 @@ server:
     port: 8080
 
 client:
-  redis:
-    host: redis
-    port: 6379
-    user:
-    password:
-    db: 0
-
   jaeger:
     host: jaeger
     port: 6831

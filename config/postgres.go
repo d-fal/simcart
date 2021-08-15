@@ -1,5 +1,7 @@
 package config
 
+import "net"
+
 type Postgres struct {
 	Host     string
 	Port     string
@@ -14,3 +16,10 @@ const (
 	Silent LogLevel = (iota) << 1
 	Verbose
 )
+
+func (cnf *Postgres) Addr() string {
+	return net.JoinHostPort(
+		cnf.Host,
+		cnf.Port,
+	)
+}

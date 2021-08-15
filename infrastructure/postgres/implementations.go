@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"fmt"
-	"net"
 	"simcart/config"
 	"simcart/pkg/logger"
 
@@ -21,10 +20,7 @@ func (p *psql) Connect(level config.LogLevel, cnf *config.Postgres) error {
 			User:     cnf.User,
 			Password: cnf.Password,
 			Database: cnf.Database,
-			Addr: net.JoinHostPort(
-				cnf.Host,
-				cnf.Port,
-			),
+			Addr:     cnf.Addr(),
 		})
 		if err = p.db.Ping(context.Background()); err != nil {
 			lg := logger.

@@ -165,7 +165,9 @@ func TestRemoveItem(t *testing.T) {
 		t.Run("remove cart ", func(t *testing.T) {
 
 			for _, resp := range response.Responses {
+
 				for _, detail := range resp.Details {
+
 					_, err := handler.Remove(context.TODO(), &cartpb.CartRequest{
 						Owner:  owner,
 						ItemId: detail.ItemUUID,
