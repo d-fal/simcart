@@ -13,7 +13,7 @@ steps:
 
 services:
   - name: postgres
-    image: postgres:9-alpine
+    image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: test_db
