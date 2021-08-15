@@ -6,18 +6,10 @@ steps:
   - name: test
     image: golang:1.16
     commands:
-      - go vet ./...
-      - POSTGRES_PASSWORD=changeme POSTGRES_DATABASE=test_db go run . migrate create model --extensions=uuid-ossp,hstore
-      - POSTGRES_PASSWORD=changeme POSTGRES_DATABASE=test_db go run . seed
-      - go test -v -coverprofile=coverage.txt -covermode=atomic ./...
-
-  - name: coverage
-    image: plugins/codecov
-    settings:
-      token:
-        from_secret: codecov-token
-      files:
-        - coverage.txt
+      - sleep 10
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DATABASE=test_db go run . migrate create model --extensions=uuid-ossp,hstore
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DATABASE=test_db go run . seed
+      - go test ./...
 
 services:
   - name: postgres
