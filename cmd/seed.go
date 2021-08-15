@@ -55,7 +55,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 
 	products := []*product_entity.Product{
 		{
-			Model:    model.Model{1},
+			Model:    model.Model{Id: 1},
 			Title:    "T-Shirt",
 			Sku:      "100200200",
 			Category: commonpb.Category_Apparel,
@@ -69,7 +69,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 			},
 		},
 		{
-			Model:    model.Model{2},
+			Model:    model.Model{Id: 2},
 			Title:    "LG TV",
 			Category: commonpb.Category_Appliance,
 			Sku:      "100200300",
@@ -83,7 +83,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 			},
 		},
 		{
-			Model:    model.Model{3},
+			Model:    model.Model{Id: 3},
 			Title:    "Cheese 250 gr",
 			Sku:      "100200400",
 			Price:    2,
@@ -97,7 +97,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 		},
 
 		{
-			Model:    model.Model{4},
+			Model:    model.Model{Id: 4},
 			Title:    "Cheese 300 gr",
 			Category: commonpb.Category_FMCG,
 			Sku:      "100200500",
@@ -112,7 +112,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 		},
 
 		{
-			Model:    model.Model{5},
+			Model:    model.Model{Id: 5},
 			Title:    "Refregerator",
 			Sku:      "100200600",
 			Price:    2000,
@@ -123,6 +123,20 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 				"origin": "Taiwan",
 				"size":   "7ft",
 				"color":  "silver",
+			},
+		},
+		{
+			Model:    model.Model{Id: 5},
+			Title:    "Samsung",
+			Sku:      "100200700",
+			Price:    1100,
+			Currency: commonpb.Currency_EUR,
+			Category: commonpb.Category_Appliance,
+			Descriptions: map[string]string{
+				"weight": "700gr",
+				"origin": "S.Korea",
+				"size":   "2.5 inches",
+				"color":  "black",
 			},
 		},
 	}
