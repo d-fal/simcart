@@ -17,6 +17,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: test_db
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_PASSWORD: changeme
   - name: redisearch
     image: redislabs/redisearch:2.0.0
