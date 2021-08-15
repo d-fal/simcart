@@ -126,7 +126,7 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 			},
 		},
 		{
-			Model:    model.Model{Id: 5},
+			Model:    model.Model{Id: 6},
 			Title:    "Samsung",
 			Sku:      "100200700",
 			Price:    1100,
