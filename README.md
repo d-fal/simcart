@@ -1,4 +1,4 @@
-[![Build Status](https://cloud.drone.io/api/badges/d-fal/simcart/status.svg)](https://cloud.drone.io/d-fal/simcart)
+[![Build Status](https://cloud.drone.io/api/badges/d-fal/simcart/status.svg)](https://cloud.drone.io/d-fal/simcart) [![codecov](https://codecov.io/gh/d-fal/simcart/branch/master/graph/badge.svg?token=GFNRYW9Z2J)](https://codecov.io/gh/d-fal/simcart)
 # Simple Cart Project 
 
 A very simple cart handling project with **grpc-gateway** , **redisearch** and **postgresql**
