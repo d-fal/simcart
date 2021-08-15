@@ -6,6 +6,6 @@ steps:
   - name: test
     image: golang:1.16
     commands:
-      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD go run . migrate create models --extensions=uuid-ossp,hstore
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD go run . migrate create model --extensions=uuid-ossp,hstore
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD go run . seed
       - go test ./...
