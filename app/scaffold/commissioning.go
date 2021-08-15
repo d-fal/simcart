@@ -7,8 +7,10 @@ import (
 	"simcart/config"
 	"simcart/infrastructure/postgres"
 	"simcart/infrastructure/search"
+	"simcart/pkg/logger"
 
 	"github.com/logrusorgru/aurora"
+	"go.uber.org/zap/zapcore"
 )
 
 func (s *skeleton) commissioning(ctx context.Context) (err error) {
@@ -18,7 +20,7 @@ func (s *skeleton) commissioning(ctx context.Context) (err error) {
 	s.tracer, s.closer, err = s.tracing()
 
 	if err != nil {
-		return err
+		logger.NewPrototype().Add("jaeger", err).Level(zapcore.WarnLevel).Commit("jaeger")
 	}
 
 	logLevel := config.Silent
