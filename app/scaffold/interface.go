@@ -19,8 +19,6 @@ type Scaffold interface {
 	Close()
 
 	SetConfigPath(string)
-	// nats
-	broker() error
 
 	// for testing purposes
 	Hibernate(ctx context.Context) error

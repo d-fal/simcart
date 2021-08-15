@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/signal"
 	"simcart/config"
-	"simcart/infrastructure/broker"
 	"syscall"
 )
 
@@ -33,16 +32,6 @@ func Prepare(ctx context.Context) Scaffold {
 
 func (s *skeleton) Hibernate(ctx context.Context) error {
 	return s.commissioning(ctx)
-}
-
-func (s *skeleton) broker() error {
-	client := broker.NewClient("nats:4222")
-
-	if err := client.Connect(); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *skeleton) NormalStart(ctx context.Context) error {

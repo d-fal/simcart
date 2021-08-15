@@ -11,9 +11,11 @@ steps:
       - go test ./...
 
 services:
-  - name: database
+  - name: postgres
     image: postgres:9-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: test_db
-      POSTGRES_PASSWORD: changeme
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+  - name: redisearch
+    image: redislabs/redisearch:2.0.0

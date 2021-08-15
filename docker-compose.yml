@@ -10,24 +10,14 @@ services:
     tty: true # Enables debugging capabilities when attached to this container.
     depends_on:
       - postgres
-      - redis
+      - redisearch
     ports:
       - "50052:50051"
     networks:
       - backend
       - dbnet
       - frontend
-  # -----------------------------
-  # user-redis
-  # -----------------------------
-  redis:
-    image: redis
-    restart: unless-stopped
-    networks:
-      - backend
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-      - REDIS_PASSWORD=str0ng_passw0rd
+
   # -----------------------------
   # postgres database
   # -----------------------------
@@ -67,13 +57,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - frontend
-      - backend
-  # -----------------------------
-  # nats message broker         |
-  # -----------------------------
-  nats:
-    image: nats
-    networks:
       - backend
 
   jaeger:
