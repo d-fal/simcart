@@ -36,6 +36,11 @@ type ProductAdapter interface {
 	SetSku(sku string) *Product
 	Select() model.SelectOrInsertFunc
 	Get() *Product
+	Insert() model.InsertFunc
+	SetCurrency(commonpb.Currency) *Product
+	SetDetails(map[string]string) *Product
+	SetCategory(cat commonpb.Category) *Product
+	SetTitle(string) *Product
 }
 
 func NewProduct() ProductAdapter {
@@ -67,5 +72,34 @@ func (p *Product) Select() model.SelectOrInsertFunc {
 }
 
 func (p *Product) Get() *Product {
+	return p
+}
+
+func (p *Product) Insert() model.InsertFunc {
+
+	return func(tx *pg.Tx) error {
+		_, err := tx.Model(p).OnConflict("(sku) do update").Insert()
+
+		return err
+	}
+}
+
+func (p *Product) SetCurrency(cur commonpb.Currency) *Product {
+	p.Currency = cur
+	return p
+}
+func (p *Product) SetDetails(detail map[string]string) *Product {
+	p.Descriptions = detail
+	return p
+}
+
+func (p *Product) SetCategory(cat commonpb.Category) *Product {
+	p.Category = cat
+	return p
+}
+
+func (p *Product) SetTitle(title string) *Product {
+	p.Title = title
+
 	return p
 }

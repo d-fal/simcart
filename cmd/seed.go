@@ -176,7 +176,8 @@ func (c *command) seed(cmd *cobra.Command, args []string) {
 		AddField(redisearch.NewNumericField("price")).
 		AddField(redisearch.NewTextField("weight")).
 		AddField(redisearch.NewTextField("size")).
-		AddField(redisearch.NewTextField("cat"))
+		AddField(redisearch.NewTextField("cat")).
+		AddField(redisearch.NewTextField("brand"))
 
 	if err := client.CreateIndexFromSchema(schema); err != nil {
 		log.Fatalf("cannot create index: %v\n", err)
