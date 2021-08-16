@@ -106,7 +106,7 @@ You can also test the apis at [simcart.100g.ir](simcart.100g.ir) at port 80 , 50
 * list : [POST] http://simcart.100g.ir/v1/cart/list
 * rm : [POST] http://simcart.100g.ir/v1/cart/rm
 * checkout : [PUT] http://simcart.100g.ir/v1/cart/checkout
-
+* Add product: [POST] http://simcart.100g.ir/v1/product/add
 
 **grpc** interface by [**evans**](https://github.com/ktr0731/evans)
 
