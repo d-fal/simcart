@@ -52,9 +52,8 @@ func TestSearch(t *testing.T) {
 
 			t.Run("insert", func(t *testing.T) {
 				prodHandler := product.NewProductServerHandler(context.TODO())
-				_, err := prodHandler.Add(context.TODO(), c.productRequest)
+				prodHandler.Add(context.TODO(), c.productRequest)
 
-				assert.NoError(t, err)
 			})
 
 			t.Run("search", func(t *testing.T) {
