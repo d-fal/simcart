@@ -1,4 +1,4 @@
-package cart_test
+package cart
 
 import (
 	"context"
@@ -9,7 +9,6 @@ import (
 	"simcart/api/pb/commonpb"
 	"simcart/config"
 	postgres "simcart/infrastructure/postgres"
-	"simcart/interface/cart"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/stretchr/testify/assert"
@@ -108,7 +107,7 @@ func TestAddToCart(t *testing.T) {
 
 		for _, request := range requests {
 			t.Run(request.Case, func(t *testing.T) {
-				handler := cart.NewCartServerHandler(context.TODO())
+				handler := new(server)
 
 				response, err := handler.Add(context.TODO(), request.request)
 
@@ -131,7 +130,7 @@ func TestListCart(t *testing.T) {
 		err := connectDb()
 
 		assert.NoError(t, err)
-		handler := cart.NewCartServerHandler(context.TODO())
+		handler := new(server)
 
 		response, err := handler.Get(context.TODO(), &cartpb.CartFilter{
 			Owner: owner,
@@ -150,7 +149,7 @@ func TestRemoveItem(t *testing.T) {
 		err := connectDb()
 
 		assert.NoError(t, err)
-		handler := cart.NewCartServerHandler(context.TODO())
+		handler := new(server)
 
 		response, err := handler.Get(context.TODO(), &cartpb.CartFilter{
 			Owner: owner,
@@ -185,7 +184,7 @@ func TestCheckout(t *testing.T) {
 	err := connectDb()
 
 	assert.NoError(t, err)
-	handler := cart.NewCartServerHandler(context.TODO())
+	handler := new(server)
 
 	t.Run("create a request", func(t *testing.T) {
 		cartResponse, err := handler.Add(context.TODO(), &cartpb.CartRequest{

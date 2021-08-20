@@ -6,6 +6,7 @@ import (
 	"log"
 	"reflect"
 	"simcart/api/pb/commonpb"
+	"simcart/app/scaffold"
 	"simcart/config"
 	product_entity "simcart/domain/product/entity"
 	"simcart/infrastructure/postgres"
@@ -31,7 +32,11 @@ func init() {
 
 func (c *command) seed(cmd *cobra.Command, args []string) {
 	// test
-	if err := s.Hibernate(systemwideContext); err != nil {
+	setup := s.Start(systemwideContext, false,
+		scaffold.WithPostgres(),
+		scaffold.WithRedisearch(),
+	)
+	if err := setup(); err != nil {
 		panic(fmt.Errorf("error commissioning the clients. %v\n", aurora.Red(err)))
 	}
 

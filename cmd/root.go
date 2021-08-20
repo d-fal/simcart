@@ -4,6 +4,10 @@ import (
 	"context"
 	"fmt"
 	"simcart/app/scaffold"
+	"simcart/interface/apm"
+	"simcart/interface/cart"
+	"simcart/interface/product"
+	"simcart/interface/product/search"
 	"simcart/pkg/logger"
 
 	"github.com/spf13/cobra"
@@ -42,7 +46,7 @@ func init() {
 
 	systemwideContext, cancelFunc = context.WithCancel(context.Background())
 
-	s = scaffold.Prepare(systemwideContext)
+	s = scaffold.NewAppScaffold()
 
 	rootCmd.Flags().StringVarP(&path, "path", "p",
 		".",
@@ -68,7 +72,18 @@ func (c *command) run(cmd *cobra.Command, args []string) {
 
 	systemwideContext = context.WithValue(systemwideContext, "logger", lg)
 
-	if err := s.NormalStart(systemwideContext); err != nil {
+	setup := s.Start(systemwideContext, true,
+		scaffold.WithPostgres(),
+		scaffold.WithOpenTracing(),
+		scaffold.WithRedisearch(),
+	)
+
+	if err := setup(apm.RegisterHealthServer(),
+		cart.NewCartServer(systemwideContext),
+		search.NewSearchServer(systemwideContext),
+		product.NewProductServer(systemwideContext)); err != nil {
+
 		fmt.Println("error: ", err)
+
 	}
 }

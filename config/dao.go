@@ -15,7 +15,6 @@ type AppConfig interface {
 	ServerGRPC() *GRPC
 	ServerRest() *Rest
 
-	ClientRedis() *Redis
 	ClientJaeger() *Jaeger
 	ClientPostgres() *Postgres
 	ClientRedisearch() *RediSearch
@@ -51,7 +50,6 @@ type Server struct {
 }
 
 type Client struct {
-	*Redis
 	*Jaeger
 	*RediSearch
 	*Postgres

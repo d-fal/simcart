@@ -5,12 +5,13 @@ import (
 	"os"
 	"os/signal"
 	"simcart/config"
+	internal_types "simcart/pkg/types"
 	"syscall"
 )
 
-func Prepare(ctx context.Context) Scaffold {
+func NewAppScaffold() Scaffold {
 
-	s := &skeleton{params: config.GetAppConfig(), context: ctx}
+	s := &skeleton{params: config.GetAppConfig()}
 
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt,
@@ -30,24 +31,26 @@ func Prepare(ctx context.Context) Scaffold {
 	return s
 }
 
-func (s *skeleton) Hibernate(ctx context.Context) error {
-	return s.commissioning(ctx)
-}
+func (s *skeleton) Start(ctx context.Context, runServer bool, options ...RunningOption) internal_types.SelectedInterfaces {
 
-func (s *skeleton) NormalStart(ctx context.Context) error {
+	return func(infs ...internal_types.RegisterRPCInterface) error {
 
-	if err := s.commissioning(ctx); err != nil {
-		return err
+		s.context, s.cancel = context.WithCancel(ctx)
+
+		for _, opt := range options {
+
+			if err := opt(ctx, s); err != nil {
+				return err
+			}
+
+		}
+		if runServer {
+			return s.server(ctx, infs...)
+		}
+		return nil
 	}
 
-	if err := s.server(ctx); err != nil {
-
-		return err
-	}
-
-	return nil
 }
-
 func (s *skeleton) SetConfigPath(path string) {
 	config.GetAppConfig().SetPath(path)
 }

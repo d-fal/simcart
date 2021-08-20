@@ -1,4 +1,4 @@
-package search_test
+package search
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"simcart/infrastructure/postgres"
 	search_db "simcart/infrastructure/search"
 	"simcart/interface/product"
-	"simcart/interface/product/search"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +24,7 @@ func TestSearch(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	handler := search.NewSearchServerHandler(context.TODO())
+	handler := new(server)
 	cases := []struct {
 		name           string
 		expected       interface{}
@@ -51,7 +51,7 @@ func TestSearch(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 
 			t.Run("insert", func(t *testing.T) {
-				prodHandler := product.NewProductServerHandler(context.TODO())
+				prodHandler := product.GetServerHandler()
 				prodHandler.Add(context.TODO(), c.productRequest)
 
 			})

@@ -1,14 +1,18 @@
-package product_test
+package product
 
 import (
 	"context"
 	"simcart/api/pb/productpb"
-	"simcart/interface/product"
+
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSearch(t *testing.T) {
-	handler := product.NewProductServerHandler(context.TODO())
+	handler := new(server)
 
-	handler.Add(context.Background(), &productpb.Product{})
+	_, err := handler.Add(context.Background(), &productpb.Product{})
+
+	assert.NotNil(t, err)
 }

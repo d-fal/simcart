@@ -5,6 +5,7 @@ import (
 	"html"
 
 	"reflect"
+	"simcart/app/scaffold"
 	cart_entity "simcart/domain/cart/entity"
 	"simcart/domain/product/entity"
 	"simcart/infrastructure/postgres"
@@ -59,7 +60,11 @@ func (c *command) migrate(cmd *cobra.Command, args []string) {
 	// 1- create database if not exists
 	// we need configs be loaded at this place
 	// however it isn't
-	if err := s.Hibernate(systemwideContext); err != nil {
+	setup := s.Start(systemwideContext, false,
+		scaffold.WithPostgres(),
+		scaffold.WithRedisearch(),
+	)
+	if err := setup(); err != nil {
 		panic(fmt.Errorf("error commissioning the clients. %v\n", aurora.Red(err)))
 	}
 

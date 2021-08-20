@@ -11,21 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-type serverHandler struct {
-	// it would be used for graceful shutdown purposes
-	ctx context.Context
-	// uinmplemented services
-	cartpb.UnimplementedCartServer
-}
-
-func NewCartServerHandler(ctx context.Context) *serverHandler {
-	s := new(serverHandler)
-	s.ctx = ctx
-
-	return s
-}
-
-func (s *serverHandler) Add(ctx context.Context, in *cartpb.CartRequest) (*cartpb.CartResponse, error) {
+func (s *server) Add(ctx context.Context, in *cartpb.CartRequest) (*cartpb.CartResponse, error) {
 
 	cartUUID, err := uuid.Parse(in.CartUUID)
 
@@ -38,7 +24,7 @@ func (s *serverHandler) Add(ctx context.Context, in *cartpb.CartRequest) (*cartp
 		return nil, status.Errorf(codes.InvalidArgument, "substandard uuid for the field owner. %s", err.Error())
 	}
 
-	cart, err := cart_repository.NewCart(s.ctx, owner)
+	cart, err := cart_repository.NewCart(s.gctx, owner)
 	cart.AddCid(cartUUID)
 
 	if err != nil {
@@ -47,7 +33,7 @@ func (s *serverHandler) Add(ctx context.Context, in *cartpb.CartRequest) (*cartp
 	return cart.AddItem(ctx, in)
 }
 
-func (s *serverHandler) Get(ctx context.Context, in *cartpb.CartFilter) (*cartpb.CartRequests, error) {
+func (s *server) Get(ctx context.Context, in *cartpb.CartFilter) (*cartpb.CartRequests, error) {
 
 	owner, err := uuid.Parse(in.Owner)
 
@@ -55,7 +41,7 @@ func (s *serverHandler) Get(ctx context.Context, in *cartpb.CartFilter) (*cartpb
 		return nil, status.Errorf(codes.InvalidArgument, "substandard uuid for the field owner. %s", err.Error())
 	}
 
-	cart, err := cart_repository.NewCart(s.ctx, owner)
+	cart, err := cart_repository.NewCart(s.gctx, owner)
 
 	if err != nil {
 		return nil, err
@@ -65,14 +51,14 @@ func (s *serverHandler) Get(ctx context.Context, in *cartpb.CartFilter) (*cartpb
 
 }
 
-func (s *serverHandler) Remove(ctx context.Context, in *cartpb.CartRequest) (*emptypb.Empty, error) {
+func (s *server) Remove(ctx context.Context, in *cartpb.CartRequest) (*emptypb.Empty, error) {
 
 	owner, err := uuid.Parse(in.Owner)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "substandard uuid for the field owner. %s", err.Error())
 	}
 
-	cart, err := cart_repository.NewCart(s.ctx, owner)
+	cart, err := cart_repository.NewCart(s.gctx, owner)
 
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "cannot get cart instance. %s", err.Error())
@@ -87,7 +73,7 @@ func (s *serverHandler) Remove(ctx context.Context, in *cartpb.CartRequest) (*em
 	return cart.RemoveItem(itemId)
 }
 
-func (s *serverHandler) Checkout(ctx context.Context, in *cartpb.CartRequest) (*cartpb.CheckoutResponse, error) {
+func (s *server) Checkout(ctx context.Context, in *cartpb.CartRequest) (*cartpb.CheckoutResponse, error) {
 	cartUUID, err := uuid.Parse(in.CartUUID)
 
 	if err != nil {
@@ -99,7 +85,7 @@ func (s *serverHandler) Checkout(ctx context.Context, in *cartpb.CartRequest) (*
 		return nil, status.Errorf(codes.InvalidArgument, "substandard uuid for the field owner. %s", err.Error())
 	}
 
-	cart, err := cart_repository.NewCart(s.ctx, owner)
+	cart, err := cart_repository.NewCart(s.gctx, owner)
 
 	return cart.Checkout(cartUUID)
 

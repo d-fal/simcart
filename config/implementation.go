@@ -60,10 +60,6 @@ func (c *appConfig) ServerRest() *Rest {
 	return c.Rest
 }
 
-func (c *appConfig) ClientRedis() *Redis {
-	return c.Redis
-}
-
 func (c *appConfig) ClientJaeger() *Jaeger {
 	return c.Jaeger
 }
