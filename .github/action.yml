@@ -1,0 +1,14 @@
+name: "Autogen"
+description: 'auto generate files'
+inputs:
+  protobufs:
+    description: 'generate protobuf files'
+    required: true
+  outputs:
+    time:
+      description: 'generated files'
+  runs:
+    using: 'docker'
+    image: './.github/Dockerfile'
+    args:
+      - ${{ inputs.protobufs }}
