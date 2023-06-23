@@ -2,7 +2,8 @@ version: 0.2
 
 phases:
   install:
-    golang: 1.20
+    runtime-versions:
+      golang: 1.20
     commands:
       - echo "start building nginx project"
   pre_build:
