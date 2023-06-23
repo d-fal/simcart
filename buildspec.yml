@@ -5,6 +5,6 @@ phases:
     golang: 1.20
     commands:
       - echo "start building nginx project"
-  prebuild:
+  pre_build:
     commands:
       - echo "running pre-build"
